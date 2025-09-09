@@ -1,0 +1,14 @@
+erDiagram
+    %% Core Nautobot Models
+    Device ||--o{ BGPRoutingInstance : "has"
+    Device ||--o{ Interface : "has"
+    Interface }o--o{ VRF : "belongs to"
+    
+    %% BGP Models
+    BGPRoutingInstance ||--o{ PeerGroup : "has"
+    BGPRoutingInstance ||--o{ PeerEndpoint : "has"
+    PeerGroup ||--o{ PeerEndpoint : "groups"
+    PeerGroup }o--o{ VRF : "operates in"
+    PeerEndpoint ||--o{ PeerGroup : "belongs to"
+    
+    

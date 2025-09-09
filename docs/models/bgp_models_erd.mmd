@@ -1,0 +1,56 @@
+erDiagram
+    %% Core Nautobot Models
+    Device ||--o{ BGPRoutingInstance : "has"
+    Device ||--o{ Interface : "has"
+    Device ||--o{ IPAddress : "has"
+    
+    Interface }o--o{ IPAddress : "assigned"
+    Interface }o--o{ VRF : "belongs to"
+    
+    IPAddress }o--o{ VRF : "belongs to"
+    
+    %% BGP Models
+    BGPRoutingInstance ||--|| AutonomousSystem : "uses"
+    BGPRoutingInstance ||--o{ PeerGroup : "has"
+    BGPRoutingInstance ||--o{ PeerEndpoint : "has"
+    BGPRoutingInstance ||--o{ AddressFamily : "has"
+    BGPRoutingInstance ||--o{ PeerEndpointAddressFamily : "has"
+    
+    PeerGroupTemplate ||--o{ PeerGroup : "templates"
+    PeerGroupTemplate ||--o{ AutonomousSystem : "owned by"
+    
+    PeerGroup ||--o{ PeerEndpoint : "groups"
+    PeerGroup }o--o{ PeerGroupTemplate : "based on"
+    PeerGroup ||--o{ BGPRoutingInstance : "belongs to"
+    PeerGroup }o--o{ VRF : "operates in"
+    PeerGroup ||--o{ AutonomousSystem : "uses"
+    PeerGroup }o--o{ IPAddress : "source IP"
+    PeerGroup }o--o{ Interface : "source interface"
+    PeerGroup ||--o{ PeerGroupAddressFamily : "has"
+    
+    Peering ||--o{ PeerEndpoint : "connects"
+    
+    PeerEndpoint ||--o{ PeerEndpoint : "peers with"
+    PeerEndpoint ||--o{ PeerGroup : "belongs to"
+    PeerEndpoint ||--o{ BGPRoutingInstance : "belongs to"
+    PeerEndpoint ||--o{ Peering : "participates in"
+    PeerEndpoint ||--o{ AutonomousSystem : "uses"
+    PeerEndpoint }o--o{ IPAddress : "source IP"
+    PeerEndpoint }o--o{ Interface : "source interface"
+    PeerEndpoint ||--o{ PeerEndpointAddressFamily : "has"
+    
+    AddressFamily ||--o{ BGPRoutingInstance : "belongs to"
+    AddressFamily }o--o{ VRF : "associated with"
+    
+    PeerGroupAddressFamily ||--o{ PeerGroup : "configures"
+    
+    PeerEndpointAddressFamily ||--o{ PeerEndpoint : "configures"
+    PeerEndpointAddressFamily }o--o{ PeerGroupAddressFamily : "inherits from"
+    PeerEndpointAddressFamily }o--o{ AddressFamily : "inherits from"
+    
+    AutonomousSystem ||--o{ BGPRoutingInstance : "used by"
+    AutonomousSystem ||--o{ PeerGroup : "used by"
+    AutonomousSystem ||--o{ PeerEndpoint : "used by"
+    AutonomousSystem }o--o{ Provider : "provided by"
+    
+    AutonomousSystemRange ||--o{ AutonomousSystem : "defines range for"
